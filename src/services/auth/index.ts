@@ -9,7 +9,7 @@ import { postRequest, putRequest } from 'utils/rest';
 
 const AuthServices = {
     signIn (credentials: ILoginCredentials) {
-        return postRequest<ILoginCredentials, IUser>('/auth', credentials);
+        return postRequest<ILoginCredentials, IUser>('/login', credentials);
     },
 
     changePassword (passwordData: IPasswordChangeRq) {

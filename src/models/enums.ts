@@ -14,15 +14,18 @@ export enum EInputSize {
     MD = 'md',
 }
 
-export enum ESearchDateType {
-    PERIOD = 0,
-    COMPARISON = 1,
+export enum EOrganizationWay {
+    BY_PROFESSIONAL = 'BY_PROFESSIONAL',
+    BY_GUIDE = 'BY_GUIDE',
+    CUSTOM = 'CUSTOM',
 }
 
-export enum ECorridor {
-    BTK = 'BTK',
-    SWTC = 'SWTC',
-    EWTC = 'EWTC',
-    NSTC = 'NSTC',
-    TKITC = 'TKITC'
+export enum EEventType {
+    PERSONAL = 'PERSONAL',
+    CORPORATE = 'CORPORATE',
+}
+
+export enum EEventPrivacy {
+    PUBLIC = 'PUBLIC',
+    PRIVATE = 'PRIVATE',
 }

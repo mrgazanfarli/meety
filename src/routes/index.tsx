@@ -11,9 +11,12 @@ const PasswordSetPage = React.lazy(() => import('pages/Auth/PasswordSet'));
 // Dashboard
 const DashboardPage = React.lazy(() => import('pages/Dashboard'));
 
-export const authProtectedRoutes: IRoute[] = [
-    { path: ROUTES.DASHBOARD.PATH, component: DashboardPage },
+// Events
+const EventsPage = React.lazy(() => import('pages/Events'));
 
+export const authProtectedRoutes: IRoute[] = [
+    { path: ROUTES.EVENTS.PATH, component: EventsPage },
+    { path: ROUTES.DASHBOARD.PATH, component: DashboardPage },
 ];
 
 export const publicRoutes: IRoute[] = [

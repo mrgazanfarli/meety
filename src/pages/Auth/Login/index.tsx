@@ -18,16 +18,17 @@ import Input from 'components/Input';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
 import SimpleLink from 'components/SimpleLink';
+import { log } from 'util';
 import { isServerError, isValidEmail } from 'utils';
 import { isError, isPending } from 'utils/redux';
 
 enum EFormField {
-    EMAIL = 'email',
+    USERNAME = 'username',
     PASSWORD = 'password',
 }
 
 interface IForm {
-    email: string;
+    username: string;
     password: string;
 }
 
@@ -54,6 +55,14 @@ const LoginPage: React.FC = () => {
         makeLoginRequest();
     };
 
+    const handleGoogleLoginSuccess = response => {
+        localStorage.setItem('token', response.accessToken);
+        localStorage.setItem('googleId', response.googleId);
+        localStorage.setItem('googleProfile', JSON.stringify(response.profileObj));
+        localStorage.setItem('googleToken', JSON.stringify(response.tokenObj));
+        window.location.reload();
+    };
+
     return (
         <div className="vw-100 d-flex align-items-center justify-content-center">
             <form onSubmit={handleLogin}>
@@ -61,23 +70,20 @@ const LoginPage: React.FC = () => {
                     <Label text={t('Common.inputs.email.label')} />
                     <Controller
                         control={control}
-                        name={EFormField.EMAIL}
+                        name={EFormField.USERNAME}
                         defaultValue=""
                         rules={{
-                            required: !getValues()[EFormField.EMAIL],
-                            validate: {
-                                isEmail: (value) => isValidEmail(value)
-                            }
+                            required: !getValues()[EFormField.USERNAME],
                         }}
                         render={({ onChange, value, onBlur }) => (
                             <Input
                                 inputSize={EInputSize.MD}
-                                hasError={Boolean(errors[EFormField.EMAIL])}
+                                hasError={Boolean(errors[EFormField.USERNAME])}
                                 isEmail
                                 value={value}
                                 onBlur={() => {
                                     onBlur();
-                                    trigger(EFormField.EMAIL);
+                                    trigger(EFormField.USERNAME);
                                 }}
                                 disabled={isPending(signInBranch)}
                                 onChange={onChange}
@@ -112,9 +118,11 @@ const LoginPage: React.FC = () => {
                         }}
                     />
                 </InputContainer>
-                <p className="fs-2 text-center text-dark">{t('Pages.login.or-login-with')}</p>
-                <div className="login-page__google-button-container">
+                <p className="fs-2 text-center text-dark mb-1">{t('Pages.login.or-login-with')}</p>
+                <div className="login-page__google-button-container mb-2">
                     <GoogleLogin
+                        onFailure={reason => console.log(reason)}
+                        onSuccess={handleGoogleLoginSuccess}
                         clientId={GOOGLE_CREDENTIALS.clientId}
                         redirectUri={'http://localhost:7000/login'}
                         buttonText={t('Pages.login.login-with-google')}
@@ -123,7 +131,7 @@ const LoginPage: React.FC = () => {
                 </div>
                 <SimpleLink
                     className="cmb-12"
-                    href={`/password-recovery${getValues()[EFormField.EMAIL] ? `?email=${getValues()[EFormField.EMAIL]}` : ''}`}
+                    href={`/password-recovery${getValues()[EFormField.USERNAME] ? `?email=${getValues()[EFormField.USERNAME]}` : ''}`}
                 >
                     {t('Pages.login.forgot-password-question')}
                 </SimpleLink>

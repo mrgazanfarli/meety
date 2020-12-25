@@ -9,7 +9,7 @@ import { IConfigPresets, IHttpClient, IRequestConfig, RequestMethod } from './mo
 
 export class HttpClient implements IHttpClient {
     private static readonly DEFAULT_CONFIG: IRequestConfig = {
-        baseURL: 'http://207.154.239.127/user/api',
+        baseURL: 'http://52.14.42.236:8080/v1/user',
         refreshTokenOnExpiry: true,
         timeout: 30000,
     };

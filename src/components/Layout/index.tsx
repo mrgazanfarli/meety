@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
-
-import { IAppState } from 'models';
+import { Link } from 'react-router-dom';
 
 import {
     Collapse,
@@ -10,20 +8,18 @@ import {
     NavbarBrand,
     NavbarToggler,
     NavItem,
-    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    NavbarText,
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 
 import { logout } from 'utils';
 
 const Layout: React.FC = (props) => {
-    const [isOpen, setIsOpen] = React.useState(false);
     const history = useHistory();
+    const [isOpen, setIsOpen] = React.useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
 
@@ -31,15 +27,13 @@ const Layout: React.FC = (props) => {
         <div className="layout">
             <div className="layout__navbar">
                 <Navbar color="dark" dark light expand="md">
-                    <NavbarBrand onClick={() => history.push('/dashboard')}>reactstrap</NavbarBrand>
+                    <NavbarBrand className="cursor-pointer"
+                                 onClick={() => history.push('/dashboard')}>meety</NavbarBrand>
                     <NavbarToggler onClick={toggle} />
                     <Collapse isOpen={isOpen} navbar>
                         <Nav className="mr-auto" navbar>
                             <NavItem>
-                                <NavLink href="/components/">Components</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                                <Link to="/events" className="nav-link">Events</Link>
                             </NavItem>
                         </Nav>
                         <div>

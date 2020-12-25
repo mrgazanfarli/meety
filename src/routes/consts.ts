@@ -16,13 +16,7 @@ export const ROUTES = {
             PATH: '/dashboard/edit'
         }
     },
-    FORECAST: {
-        PATH: '/forecast',
+    EVENTS: {
+        PATH: '/events',
     },
-    CORRIDORS: {
-        PATH: '/corridors',
-    },
-    SEARCH_RESULTS: {
-        PATH: '/search-results'
-    }
 };

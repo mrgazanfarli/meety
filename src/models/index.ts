@@ -1,8 +1,6 @@
-import { ERequestStatus } from 'models/enums';
+import { EEventPrivacy, EEventType, EOrganizationWay, ERequestStatus } from 'models/enums';
 import { Maybe } from 'models/types';
 import moment from 'moment';
-import { IPhotoRp } from 'services/profile/models';
-import { ICountryOptionsRp, IOptionsResponse } from 'services/report/models';
 
 export interface Action<T = any> {
     type: T
@@ -28,34 +26,16 @@ export interface IAsyncData<T> extends IAsyncDataBase {
 }
 
 export interface IAppState {
-    isSideBarOpen: boolean;
-    isRightBarOpen: boolean;
     signIn: IAsyncData<IUser>;
     uploadImage: IAsyncData<ISimpleId>;
     changePassword: IAsyncData<void>;
     resetPassword: IAsyncData<void>;
-    uploadProfilePhoto: IAsyncData<IPhotoRp>;
     setPassword: IAsyncData<void>;
-    generalOptions: IAsyncData<IOptionsResponse>;
-    countryOptions: IAsyncData<ICountryOptionsRp>;
-    countryFilters: IAsyncData<IOptionsResponse>;
-    generalReport: IAsyncData<any>;
-    reportType: string;
-    countryReport: IAsyncData<any>;
 }
 
 export interface IRoute {
     component: any;
     path: string;
-}
-
-export interface ISavedItem {
-
-}
-
-export interface IMomentDateComparison {
-    startDate: moment.Moment | null;
-    endDate: moment.Moment | null;
 }
 
 export interface IError {
@@ -89,12 +69,54 @@ export interface ILocalUser {
     photoChangedName: string;
 }
 
-export interface IOptions {
-    key: string;
-    options: IDataWithNumber[];
-}
-
 export interface IDataWithNumber {
     no: number;
     name: string;
+}
+
+export interface IVendor {
+    id: number;
+    name: string;
+}
+
+export interface IExtra {
+    name: string;
+    attendees: string[];
+}
+
+export interface IUpcomingEvent {
+    datetime: string;
+    location: string;
+    name: string;
+    description: string;
+    vendor: IVendor;
+    eventType: EEventType;
+    eventPrivacy: EEventPrivacy;
+    extras: IExtra[];
+    organizationWay: EOrganizationWay;
+    createdBy: string;
+}
+
+// upcoming event filters
+
+export interface IUpcomingEventFilter {
+    name: string;
+    location: string;
+    vendor: string;
+    eventType: EEventType;
+    organizationWay: EOrganizationWay;
+    datetime: string;
+}
+
+export interface IEvent {
+    datetime: string;
+    location: string;
+    name: string;
+    description: string;
+    vendor: IVendor;
+    eventType: EEventType;
+    eventPrivacy: EEventPrivacy;
+    extras: IExtra[];
+    organizationWay: EOrganizationWay;
+
 }

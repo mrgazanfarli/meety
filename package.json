@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "@testing-library/react": "11.1.0",
     "@testing-library/user-event": "12.1.10",
     "axios": "0.21.0",
     "bootstrap": "4.5.3",
+    "express": "^4.17.1",
+    "gapi-script": "^1.0.2",
     "i18next": "^19.8.4",
     "i18next-browser-languagedetector": "6.0.1",
     "moment": "2.29.1",
@@ -30,7 +34,8 @@
   },
   "scripts": {
     "start:client": "PORT=7000 react-scripts start",
-    "start": "serve -s build",
+    "start:server": "cd ./server && npm start",
+    "start": "react-scripts build && npm run start:server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
