@@ -3,14 +3,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import 'react-dates/initialize';
 
 import App from 'App';
 import i18n from 'i18n';
 import reportWebVitals from 'reportWebVitals';
 import store from 'store';
 
-import 'react-dates/lib/css/_datepicker.css';
 import 'assets/sass/index.scss';
 
 // localStorage.setItem('token', 'test');
