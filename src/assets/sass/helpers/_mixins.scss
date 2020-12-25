@@ -1,0 +1,38 @@
+@mixin commonTransition() {
+    transition: all .2s ease-out;
+}
+
+@mixin controlBorder() {
+    border: 1px solid $color-kimberly-light;
+
+    &:focus {
+        &:not(.has-error) {
+            border-color: $color-kimberly-medium;
+        }
+    }
+}
+
+@mixin controlPlaceholder {
+    font-size: 12px;
+    color: $color-kimberly-medium;
+    font-weight: 500;
+}
+
+@mixin borderRadius($timesBase) {
+    border-radius: $border-radius-base * $timesBase;
+}
+
+@mixin rightBarItem() {
+    @include borderRadius(4);
+
+    width: $right-bar-width;
+    background-color: $color-white;
+
+    @media print {
+        display: none;
+    }
+}
+
+@mixin sideBarShadow {
+    box-shadow: 4px 0 10px rgba(111, 111, 111, 0.15);
+}

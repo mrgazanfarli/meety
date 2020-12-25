@@ -1,0 +1,27 @@
+{
+  "Common": {
+    "inputs": {
+      "password": {
+        "label": "Password",
+        "placeholder": "Password"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Your email"
+      }
+    }
+  },
+  "ACTIONS": {
+    "login": "Log in"
+  },
+  "Pages": {
+    "login": {
+      "forgot-password-question": "Forgot password?",
+      "login-with-google": "Google",
+      "or-login-with": "or login with"
+    },
+    "password-recovery": {
+      "title": "Reset password"
+    }
+  }
+}

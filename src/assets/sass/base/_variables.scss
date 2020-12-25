@@ -1,0 +1,39 @@
+$base: 4px;
+$border-radius-base: 2px;
+
+// Colors
+$color-blue-primary: #039BE5;
+$color-blue-secondary: #008BCF;
+$color-aqua-light: #F2FBFF;
+$color-kimberly-dark: #7A81A6;
+$color-kimberly-medium: #C2C6DA;
+$color-kimberly-light: #F5F6FB;
+$color-red-lighter: #D40000;
+$color-red: #FF0000;
+$color-black: #000;
+$color-white: #fff;
+
+$color-primary: #0E7C7B;
+$color-secondary: #17BEBB;
+$color-light: #D4F4DD;
+$color-danger: #D62246;
+$color-dark: #4B1D3F;
+
+// Typography
+$font-size-step: 4;
+$font-size-min: 12;
+$font-size-max: 20;
+
+// Break points
+$screen-sm: 767px;
+$screen-md: 992px;
+$screen-lg: 1200px;
+
+// Static sizing
+$right-bar-width: 344px;
+$side-bar-width: 244px;
+$title-bar-height: 64px;
+
+// Static spacing
+$page-content-padding: $base * 8;
+$page-content-padding-md: $base * 6;

@@ -1,0 +1,23 @@
+@for $i from 1 through (($font-size-max - $font-size-min)/$font-size-step + 1) {
+    .fs-#{$i} {
+        font-size: #{($font-size-step * $i + 8)}px !important;
+    }
+}
+
+.font-weight-medium {
+    font-weight: 500;
+}
+
+.font-weight-semi-bold {
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 20px;
+    line-height: 28px;
+}
+
+h2 {
+    font-size: 16px;
+    line-height: 24px;
+}

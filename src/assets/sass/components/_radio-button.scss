@@ -1,0 +1,46 @@
+.radio-button {
+    position: relative;
+    height: 16px;
+    cursor: pointer;
+
+    &__field {
+        position: absolute;
+        height: 16px;
+        width: 16px;
+        opacity: 0;
+        cursor: pointer;
+
+        &:checked {
+            & + span {
+                &::after {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    &__checker {
+        @include commonTransition();
+
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 1px solid $color-blue-primary;
+        border-radius: 50%;
+        pointer-events: none;
+
+        &::after {
+            @include commonTransition();
+
+            position: absolute;
+            content: '';
+            left: 2px;
+            top: 2px;
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            border-radius: 50%;
+            background-color: $color-blue-primary;
+            opacity: 0;
+        }
+    }
+}

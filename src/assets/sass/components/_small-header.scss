@@ -1,0 +1,12 @@
+.small-header {
+    padding: $base * 6;
+    background-color: $color-white;
+
+    @media screen and (max-width: $screen-md) {
+        padding-top: $base * 16;
+    }
+
+    @media print {
+        display: none;
+    }
+}

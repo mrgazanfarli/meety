@@ -1,0 +1,14 @@
+.auth-input-container {
+    max-width: 568px;
+    min-width: 300px;
+}
+
+.login-page {
+    &__google-button-container {
+        button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

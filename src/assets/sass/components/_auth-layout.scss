@@ -1,0 +1,9 @@
+.auth-layout {
+    display: flex;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    border: 12px solid $color-primary;
+    border-right-width: 0;
+    border-left-width: 0;
+}

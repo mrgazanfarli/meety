@@ -1,0 +1,9 @@
+.simple-link {
+    color: $color-kimberly-dark;
+    font-size: 12px;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

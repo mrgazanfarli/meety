@@ -1,0 +1,49 @@
+.button {
+    padding: $base * 3 $base * 6;
+    border: 0;
+    cursor: pointer;
+
+    @include commonTransition();
+    @include borderRadius(2);
+
+    &--primary {
+        font-size: 12px;
+        background-color: $color-blue-primary;
+        color: $color-white;
+        border: 1px solid transparent;
+
+        &:hover:not(.disabled) {
+            background-color: $color-blue-secondary;
+        }
+    }
+
+    &--secondary {
+        font-size: 12px;
+        border: 1px solid $color-blue-primary;
+        background-color: $color-white;
+        color: $color-blue-primary;
+
+        &:hover:not(.disabled) {
+            background-color: $color-blue-primary;
+            border-color: transparent;
+            color: $color-white;
+        }
+    }
+
+    &--basic {
+        border-radius: 0;
+        padding: 0;
+        background: transparent;
+
+        &:focus {
+            border: 0;
+            outline: 0;
+        }
+    }
+
+    &.disabled {
+        opacity: .5;
+        cursor: not-allowed;
+        outline: 0;
+    }
+}

@@ -1,0 +1,10 @@
+.page-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $title-bar-height;
+    background-color: $color-white;
+    border-radius: $border-radius-base * 4;
+    padding: 0 $base * 6;
+    margin-bottom: $base * 6;
+}
