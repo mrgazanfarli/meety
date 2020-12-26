@@ -9,14 +9,13 @@ import { Button } from 'reactstrap';
 import { GoogleLogin } from 'react-google-login';
 
 import { signIn } from 'actions/auth';
-import { IAppState, IAsyncData, IUser } from 'models';
+import { IAppState, IAsyncData } from 'models';
 import { EInputSize } from 'models/enums';
 
 import FormFieldError from 'components/FormFieldError';
 import Input from 'components/Input';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
-import SimpleLink from 'components/SimpleLink';
 import { isServerError } from 'utils';
 import { isError, isPending } from 'utils/redux';
 

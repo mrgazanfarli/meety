@@ -1,7 +1,7 @@
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { Schema } from 'yup';
 
-import { ELocalStorageItem } from 'consts';
+// import { ELocalStorageItem } from 'consts';
 import { IError } from 'models';
 import { isError, logout } from 'utils';
 

@@ -4,7 +4,6 @@ import { IAppState } from 'models';
 import {
     signIn,
 } from 'reducers/auth';
-import { uploadImage } from 'reducers/file';
 import {
     upcomingEvents,
     createEvent,
@@ -13,7 +12,6 @@ import {
 
 const rootReducer = combineReducers<IAppState>({
     signIn,
-    uploadImage,
     upcomingEvents,
     createEvent,
 });

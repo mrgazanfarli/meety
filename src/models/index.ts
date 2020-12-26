@@ -27,7 +27,6 @@ export interface IAsyncData<T> extends IAsyncDataBase {
 
 export interface IAppState {
     signIn: IAsyncData<void>;
-    uploadImage: IAsyncData<ISimpleId>;
     upcomingEvents: IAsyncData<IUpcomingEvent[]>,
     createEvent: IAsyncData<void>,
 }

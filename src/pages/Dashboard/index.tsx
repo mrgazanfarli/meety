@@ -27,7 +27,7 @@ import {
     SmokingRooms,
     RecordVoiceOver,
 } from '@material-ui/icons';
-import { isError, isLoading, isSuccess } from 'utils/redux';
+import { isError, isPending, isSuccess } from 'utils/redux';
 
 const DashboardPage: React.FC = () => {
     const dispatch = useDispatch();
@@ -74,7 +74,7 @@ const DashboardPage: React.FC = () => {
 
     let content = null;
 
-    if (isLoading(upcomingEventsBranch)) {
+    if (isPending(upcomingEventsBranch)) {
         content = <LoadingSpinner />;
     } else if (isError(upcomingEventsBranch)) {
         content = <h4 className="text-danger my-3">Unexpected error occurred! Please, try again later.</h4>
@@ -288,7 +288,7 @@ const DashboardPage: React.FC = () => {
                             </CardBody>
                             <CardFooter>
                                 <Button color="primary" onClick={handleFilterApply}
-                                        disabled={isLoading(upcomingEventsBranch)}>Apply</Button>
+                                        disabled={isPending(upcomingEventsBranch)}>Apply</Button>
                             </CardFooter>
                         </Card>
                     </UncontrolledCollapse>

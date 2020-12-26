@@ -39,7 +39,7 @@ import DateTimePicker from 'react-datetime';
 import { logout } from 'utils';
 
 import 'react-datetime/css/react-datetime.css';
-import { isLoading, isPending } from 'utils/redux';
+import { isPending } from 'utils/redux';
 
 enum EFormField {
     NAME = 'name',

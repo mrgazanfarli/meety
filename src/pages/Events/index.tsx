@@ -116,7 +116,7 @@ const EventsPage: React.FC = () => {
                                         <tr key={iCalUID}>
                                             <td>{i + 1}</td>
                                             <td>
-                                                <a target="_blank" href={htmlLink}>Go to event</a>
+                                                <a rel="noreferrer" target="_blank" href={htmlLink}>Go to event</a>
                                             </td>
                                             <td>
                                                 <Button color="secondary" onClick={() => {
@@ -127,9 +127,9 @@ const EventsPage: React.FC = () => {
                                             <td>{organizer.self ? 'You' : organizer.email}</td>
                                             <td>{moment(startDateTime).format('DD.MM.YYYY HH:mm')}</td>
                                             <td>{moment(endDateTime).format('DD.MM.YYYY HH:mm')}</td>
-                                            <td>{location ?  <a target="_blank" href={`https://www.google.com/search?q=${location}`}>{location}</a> : <>&mdash;</>}</td>
+                                            <td>{location ?  <a rel="noreferrer" target="_blank" href={`https://www.google.com/search?q=${location}`}>{location}</a> : <>&mdash;</>}</td>
                                             <td>
-                                                {hangoutLink ? <a target="_blank" href={hangoutLink}>Join</a> : <>&mdash;</>}
+                                                {hangoutLink ? <a rel="noreferrer" target="_blank" href={hangoutLink}>Join</a> : <>&mdash;</>}
                                             </td>
                                         </tr>
                                     )
