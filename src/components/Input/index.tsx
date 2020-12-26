@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { isValidEmail } from 'utils';
 
-import eyeIcon from 'assets/images/icons/ic-eye.svg';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 
 interface IProps extends React.InputHTMLAttributes<any> {
     value: string;
@@ -44,12 +44,13 @@ const Input: React.FC<IProps> = (props) => {
                 }}
             />
             {isPassword && (
-                <img
-                    alt=""
-                    src={eyeIcon}
-                    className="input__password-visibility"
-                    onClick={handlePasswordToggleClick}
-                />
+                <>
+                    {isContentShown ? (
+                        <VisibilityOff className="input__password-visibility" onClick={handlePasswordToggleClick} />
+                    ) : (
+                        <Visibility className="input__password-visibility" onClick={handlePasswordToggleClick} />
+                    )}
+                </>
             )}
         </div>
     );
