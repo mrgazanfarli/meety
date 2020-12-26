@@ -25,7 +25,7 @@ import {
     ModalFooter,
     Row,
     Col,
-    Input,
+    Input, Button,
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -80,6 +80,10 @@ const Layout: React.FC = (props) => {
 
     const handleEventAddition = () => {
         setAddModalVisibility(true);
+    };
+
+    const handleCreateEvent = () => {
+
     };
 
     return (
@@ -315,6 +319,9 @@ const Layout: React.FC = (props) => {
                         </Col>
                     </Row>
                 </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={handleCreateEvent}>Create</Button>
+                </ModalFooter>
             </Modal>
         </div>
     );

@@ -34,8 +34,6 @@
     "yup": "^0.29.3"
   },
   "scripts": {
-    "start:client": "PORT=7000 react-scripts start",
-    "start:server": "cd ./server && npm start",
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
