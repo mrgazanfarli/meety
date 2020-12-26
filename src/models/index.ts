@@ -87,7 +87,7 @@ export interface IEvent {
     noiseAllowed: boolean;
     smokingAllowed: boolean;
     createdBy: string;
-    eventStatus: EEventStatus;
+    eventStatus?: EEventStatus;
     imgUrl?: string;
 }
 
