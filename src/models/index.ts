@@ -26,7 +26,7 @@ export interface IAsyncData<T> extends IAsyncDataBase {
 }
 
 export interface IAppState {
-    signIn: IAsyncData<IUser>;
+    signIn: IAsyncData<void>;
     uploadImage: IAsyncData<ISimpleId>;
     changePassword: IAsyncData<void>;
     resetPassword: IAsyncData<void>;
@@ -118,5 +118,4 @@ export interface IEvent {
     eventPrivacy: EEventPrivacy;
     extras: IExtra[];
     organizationWay: EOrganizationWay;
-
 }

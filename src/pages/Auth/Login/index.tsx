@@ -12,14 +12,12 @@ import { signIn } from 'actions/auth';
 import { IAppState, IAsyncData, IUser } from 'models';
 import { EInputSize } from 'models/enums';
 
-// import Button from 'components/Button';
 import FormFieldError from 'components/FormFieldError';
 import Input from 'components/Input';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
 import SimpleLink from 'components/SimpleLink';
-import { log } from 'util';
-import { isServerError, isValidEmail } from 'utils';
+import { isServerError } from 'utils';
 import { isError, isPending } from 'utils/redux';
 
 enum EFormField {
@@ -36,7 +34,7 @@ const LoginPage: React.FC = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
-    const signInBranch = useSelector<IAppState, IAsyncData<IUser>>((state) => state.signIn);
+    const signInBranch = useSelector<IAppState, IAsyncData<void>>((state) => state.signIn);
 
     const {
         control,
@@ -49,6 +47,8 @@ const LoginPage: React.FC = () => {
     const makeLoginRequest = handleSubmit(values => {
         dispatch(signIn(values, history));
     });
+
+    console.log(signInBranch.error)
 
     const handleLogin = (e?: FormEvent) => {
         e && e.preventDefault();
@@ -67,7 +67,7 @@ const LoginPage: React.FC = () => {
         <div className="vw-100 d-flex align-items-center justify-content-center">
             <form onSubmit={handleLogin}>
                 <InputContainer className="auth-input-container mb-4">
-                    <Label text={t('Common.inputs.email.label')} />
+                    <Label text={t('Common.inputs.username.label')} />
                     <Controller
                         control={control}
                         name={EFormField.USERNAME}
@@ -79,7 +79,6 @@ const LoginPage: React.FC = () => {
                             <Input
                                 inputSize={EInputSize.MD}
                                 hasError={Boolean(errors[EFormField.USERNAME])}
-                                isEmail
                                 value={value}
                                 onBlur={() => {
                                     onBlur();
@@ -87,12 +86,12 @@ const LoginPage: React.FC = () => {
                                 }}
                                 disabled={isPending(signInBranch)}
                                 onChange={onChange}
-                                placeholder={t('Common.inputs.email.placeholder')}
+                                placeholder={t('Common.inputs.username.placeholder')}
                             />
                         )}
                     />
                 </InputContainer>
-                <InputContainer className="auth-input-container cmb-12">
+                <InputContainer className="auth-input-container cmb-16">
                     <Label text={t('Common.inputs.password.label')} />
                     <Controller
                         render={({ onChange, value, onBlur }) => (
@@ -118,8 +117,8 @@ const LoginPage: React.FC = () => {
                         }}
                     />
                 </InputContainer>
-                <p className="fs-2 text-center text-dark mb-1">{t('Pages.login.or-login-with')}</p>
-                <div className="login-page__google-button-container mb-2">
+                <p className="fs-2 text-center text-dark mb-3">{t('Pages.login.or-login-with')}</p>
+                <div className="login-page__google-button-container mb-3">
                     <GoogleLogin
                         onFailure={reason => console.log(reason)}
                         onSuccess={handleGoogleLoginSuccess}
@@ -129,16 +128,16 @@ const LoginPage: React.FC = () => {
                         style={{ width: '100%' }}
                     />
                 </div>
-                <SimpleLink
-                    className="cmb-12"
-                    href={`/password-recovery${getValues()[EFormField.USERNAME] ? `?email=${getValues()[EFormField.USERNAME]}` : ''}`}
-                >
-                    {t('Pages.login.forgot-password-question')}
-                </SimpleLink>
+                {/*<SimpleLink*/}
+                {/*    className="cmb-12"*/}
+                {/*    href={`/password-recovery${getValues()[EFormField.USERNAME] ? `?email=${getValues()[EFormField.USERNAME]}` : ''}`}*/}
+                {/*>*/}
+                {/*    {t('Pages.login.forgot-password-question')}*/}
+                {/*</SimpleLink>*/}
                 {isError(signInBranch) && (
                     <div className="auth-input-container mb-2">
                         <FormFieldError
-                            message={isServerError(signInBranch.error) ? t('Error.serverError') : t('Error.login.loginFailed')}
+                            message={isServerError(signInBranch.error) ? 'Internal server error occurred' : 'Incorrect credentials'}
                         />
                     </div>
                 )}

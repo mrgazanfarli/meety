@@ -28,17 +28,24 @@ import {
 
 // graph items will be passed to dashboard as a prop to make it easy to preview
 const DashboardPage: React.FC = () => {
-    const [isFilterOpen, setFilterVisibility] = React.useState<boolean>(false);
     const [name, setName] = React.useState<string>('');
     const [location, setLocation] = React.useState('');
     const [vendor, setVendor] = React.useState('');
-    const [eventType, setEventType] = React.useState<EEventType>(EEventType.PERSONAL);
+    const [eventType, setEventType] = React.useState<EEventType | undefined>();
+
+    const resetFilters = () => {
+        setName('');
+        setLocation('');
+        setVendor('');
+        setEventType(undefined);
+    };
 
     return (
         <Container>
             <Row>
                 <Col xs={12}>
                     <Button className="my-2" color="primary" id="toggleFilters">Filters</Button>
+                    <Button className="my-2 ml-3" color="danger" onClick={resetFilters}>Reset filters</Button>
                     <UncontrolledCollapse toggler="#toggleFilters">
                         <Card>
                             <CardBody>

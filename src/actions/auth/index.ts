@@ -13,9 +13,8 @@ import AuthActions from './consts';
 
 export const signIn = (credentials: ILoginCredentials, history: any) => {
     return {
-        payload: AuthServices.signIn(credentials).then(({ token, ...rest }) => {
-            localStorage.setItem(ELocalStorageItem.TOKEN, token);
-            localStorage.setItem(ELocalStorageItem.USER_DETAILS, JSON.stringify(rest));
+        payload: AuthServices.signIn(credentials).then(() => {
+            localStorage.setItem(ELocalStorageItem.TOKEN, 'token');
             history.push(ROUTES.DASHBOARD.PATH);
         }),
         type: AuthActions.SIGN_IN,

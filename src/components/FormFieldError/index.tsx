@@ -6,7 +6,7 @@ interface IProps {
 
 const FormFieldError: React.FC<IProps> = ({ message }) => {
     return (
-        <p className="form-field-error fs-1">{message}</p>
+        <p className="form-field-error fs-1 mb-0 mt-1">{message}</p>
     )
 };
 

@@ -8,6 +8,10 @@
       "email": {
         "label": "Email",
         "placeholder": "Your email"
+      },
+      "username": {
+        "label": "Username",
+        "placeholder": "Your username"
       }
     }
   },
