@@ -47,8 +47,6 @@ const LoginPage: React.FC = () => {
         dispatch(signIn(values, history));
     });
 
-    console.log(signInBranch.error)
-
     const handleLogin = (e?: FormEvent) => {
         e && e.preventDefault();
         makeLoginRequest();

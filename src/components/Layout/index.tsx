@@ -43,7 +43,7 @@ import { isPending } from 'utils/redux';
 
 enum EFormField {
     NAME = 'name',
-    DATE_TIME = 'datetime',
+    DATE_TIME = 'dateTime',
     LOCATION = 'location',
     DESCRIPTION = 'description',
     VENDOR = 'vendor',
@@ -58,7 +58,7 @@ interface IForm {
     vendor: string;
     organizationWay: EOrganizationWay;
     extras: string;
-    datetime: string;
+    dateTime: string;
 }
 
 const Layout: React.FC = (props) => {
@@ -93,7 +93,7 @@ const Layout: React.FC = (props) => {
     const handleCreateEvent = handleSubmit((values: IForm) => {
         dispatch(createEvent({
             ...values,
-            datetime: moment(values.datetime).toISOString(),
+            dateTime: moment(values.dateTime).toISOString(),
             eventType,
             eventPrivacy,
             noiseAllowed,
@@ -101,7 +101,8 @@ const Layout: React.FC = (props) => {
             vendor: {
                 id: values.vendor,
                 name: 'Vendor'
-            }
+            },
+            createdBy: ['durna', 'mrgazanfarli'][Math.round(Math.random())]
         })).then(() => {
             Swal.fire({
                 titleText: 'Event created!',

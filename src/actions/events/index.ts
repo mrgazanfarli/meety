@@ -1,4 +1,4 @@
-import { IEvent } from 'models';
+import { IEvent, IPaginationData } from 'models';
 import { IUpcomingEventFilter } from 'services/events/models';
 import EventServices from 'services/events';
 
@@ -15,5 +15,12 @@ export const createEvent = (eventData: IEvent): any => {
     return {
         type: EventActions.CREATE_EVENT,
         payload: EventServices.createEvent(eventData),
+    }
+};
+
+export const getUserEvents = (paginationData: IPaginationData): any => {
+    return {
+        type: EventActions.GET_USER_EVENTS,
+        payload: EventServices.getEvents(paginationData),
     }
 };

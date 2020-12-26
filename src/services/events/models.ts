@@ -1,12 +1,16 @@
+import { IEvent, IPaginationData } from 'models';
 import { EEventType, EOrganizationWay } from 'models/enums';
 
-export interface IUpcomingEventFilter {
+export interface IUpcomingEventFilter extends IPaginationData {
     name?: string;
     location?: string;
     vendor?: string;
     eventType?: EEventType;
     organizationWay?: EOrganizationWay;
-    datetime?: string;
-    offset: number;
-    limit: number;
+    dateTime?: string;
+}
+
+export interface IUserEventsResponse {
+    totalPageCount: number;
+    events: IEvent[];
 }

@@ -1,14 +1,53 @@
+import {
+    EmojiPeople,
+    Info,
+    Person,
+    QueryBuilder,
+    RecordVoiceOver,
+    Room,
+    SmokingRooms,
+    SentimentSatisfiedAlt,
+} from '@material-ui/icons';
+import { getUserEvents } from 'actions/events';
+import InputContainer from 'components/InputContainer';
+import Label from 'components/Label';
+import LoadingSpinner from 'components/Loading';
+import { IAppState, IAsyncData, IEvent } from 'models';
 import moment from 'moment';
 import * as React from 'react';
-import { Button, Col, Container, Modal, ModalBody, ModalHeader, Row, Table } from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    Button,
+    Card,
+    CardBody, CardFooter,
+    CardHeader,
+    Col,
+    Container,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    Row,
+    Table
+} from 'reactstrap';
 import { gapi } from 'gapi-script';
+import { IUserEventsResponse } from 'services/events/models';
+import { isError, isPending, isSuccess } from 'utils/redux';
 
 const EventsPage: React.FC = () => {
+    const dispatch = useDispatch();
+    const eventsBranch = useSelector<IAppState, IAsyncData<IUserEventsResponse>>((state) => state.userEvents);
+
+    const [page, setPage] = React.useState<number>(1);
+    const [limit, setLimit] = React.useState<number>(10);
+
     React.useEffect(
         () => {
-            gapi.load('client:auth2', initClient);
+            dispatch(getUserEvents({
+                limit,
+                offset: (page - 1) * limit,
+            }));
         },
-        []
+        [page, limit]
     );
 
     const [signedIn, setSignedIn] = React.useState(false);
@@ -27,8 +66,12 @@ const EventsPage: React.FC = () => {
             discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
             scope: 'https://www.googleapis.com/auth/calendar.readonly'
         }).then(() => {
-            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            if (!gapi.auth2.getAuthInstance().isSignedIn?.je) {
+                gapi.auth2.getAuthInstance().signIn();
+            } else {
+                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            }
         }).catch(e => {
             console.log('GOOGLE INIT FAILED: ', e);
         });
@@ -36,10 +79,6 @@ const EventsPage: React.FC = () => {
 
     const updateSigninStatus = (isSignedIn: boolean) => {
         setSignedIn(isSignedIn);
-
-        if (isSignedIn) {
-            getCalendarEvents();
-        }
     };
 
     const getCalendarEvents = () => {
@@ -61,8 +100,119 @@ const EventsPage: React.FC = () => {
                 setGoogleEventsLoading(false);
             });
         } else {
-            gapi.auth2.getAuthInstance().signIn()
+            gapi.load('client:auth2', initClient);
         }
+    };
+
+    let userEventsContent = null;
+
+    if (isPending(eventsBranch)) {
+        userEventsContent = <LoadingSpinner />;
+    } else if (isError(eventsBranch)) {
+        userEventsContent = <h4 className="text-danger">Unexpected error occurred! Please, try again later...</h4>
+    } else if (isSuccess(eventsBranch)) {
+        userEventsContent = (
+            <>
+                <h3 className="text-primary my-3">Events:</h3>
+                <Row>
+                    {eventsBranch.data.events.map((e) => {
+                        const {
+                            name,
+                            description,
+                            dateTime,
+                            createdBy,
+                            eventStatus,
+                            location,
+                            imgUrl,
+                            smokingAllowed,
+                            noiseAllowed,
+                            eventType,
+                        } = e;
+
+                        return (
+                            <Col xs={6} className="py-3">
+                                <Card>
+                                    <CardHeader>
+                                        {name}
+                                    </CardHeader>
+                                    <CardBody className="pt-0 px-0">
+                                        <img
+                                            style={{ width: '100%', height: '250px', objectFit: 'cover' }}
+                                            src={imgUrl}
+                                            alt={name}
+                                        />
+                                        <div className="px-3 mt-2 text-justify">
+                                            <p>{description}</p>
+                                            <Row>
+                                                <Col xs={6}>
+                                                    <span className="text-muted d-flex align-items-center">
+                                                        <QueryBuilder />
+                                                        <span
+                                                            className="ml-2">{moment(dateTime).format('DD.MM.YYYY HH:mm')}</span>
+                                                    </span>
+                                                    <span className="text-muted mt-2 d-flex align-items-center">
+                                                        <Room />
+                                                        <span className="ml-2">{location}</span>
+                                                    </span>
+                                                    <span className="text-muted mt-2 d-flex align-items-center">
+                                                        <SmokingRooms />
+                                                        <span
+                                                            className="ml-2">{smokingAllowed ? 'Allowed' : 'Not allowed'}</span>
+                                                    </span>
+                                                </Col>
+                                                <Col xs={6}>
+                                                    <span className="text-muted d-flex align-items-center">
+                                                        <Person />
+                                                        <span className="ml-2">{createdBy}</span>
+                                                    </span>
+                                                    <span className="text-muted mt-2 d-flex align-items-center">
+                                                        <EmojiPeople />
+                                                        <span className="ml-2">{eventType}</span>
+                                                    </span>
+                                                    <span className="text-muted mt-2 d-flex align-items-center">
+                                                        <RecordVoiceOver />
+                                                        <span
+                                                            className="ml-2">{noiseAllowed ? 'Allowed' : 'Not allowed'}</span>
+                                                    </span>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </CardBody>
+                                    <CardFooter className="d-flex justify-content-end">
+                                        <Button
+                                            color="secondary"
+                                            className="d-flex align-items-center"
+                                        >
+                                            <Info className="mr-2" /> Details
+                                        </Button>
+                                        <Button
+                                            color="primary"
+                                            className="d-flex align-items-center ml-3"
+                                        >
+                                            <SentimentSatisfiedAlt className="mr-2" /> Join
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            </Col>
+                        );
+                    })}
+                </Row>
+            </>
+        )
+    }
+
+    const renderPaginationOptions = () => {
+        let content: JSX.Element[] = [];
+
+        if (isSuccess(eventsBranch)) {
+            for (let i = 0; i < eventsBranch.data.totalPageCount; i++) {
+                content.push((
+                    <option value={i + 1}>{i + 1}</option>
+                ))
+            }
+        }
+
+        return content;
     };
 
     return (
@@ -79,6 +229,33 @@ const EventsPage: React.FC = () => {
                             Click to get your Google events
                         </Button>
                     )}
+                    <div className="d-flex">
+                        <InputContainer>
+                            <Label text={'Per page'} />
+                            <select
+                                value={limit}
+                                onChange={e => setLimit(+e.target.value)}
+                                className="form-control"
+                                style={{ width: '150px' }}
+                            >
+                                <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </InputContainer>
+                        <InputContainer className="ml-3">
+                            <Label text={'page'} />
+                            <select
+                                disabled={isPending(eventsBranch) || isError(eventsBranch)}
+                                value={page}
+                                onChange={e => setPage(+e.target.value)}
+                                className="form-control"
+                                style={{ width: '150px' }}
+                            >
+                                {renderPaginationOptions()}
+                            </select>
+                        </InputContainer>
+                    </div>
                     {googleEvents?.length > 0 ? (
                         <>
                             <h3 className="text-primary my-3">Google events:</h3>
@@ -127,9 +304,11 @@ const EventsPage: React.FC = () => {
                                             <td>{organizer.self ? 'You' : organizer.email}</td>
                                             <td>{moment(startDateTime).format('DD.MM.YYYY HH:mm')}</td>
                                             <td>{moment(endDateTime).format('DD.MM.YYYY HH:mm')}</td>
-                                            <td>{location ?  <a rel="noreferrer" target="_blank" href={`https://www.google.com/search?q=${location}`}>{location}</a> : <>&mdash;</>}</td>
+                                            <td>{location ? <a rel="noreferrer" target="_blank"
+                                                               href={`https://www.google.com/search?q=${location}`}>{location}</a> : <>&mdash;</>}</td>
                                             <td>
-                                                {hangoutLink ? <a rel="noreferrer" target="_blank" href={hangoutLink}>Join</a> : <>&mdash;</>}
+                                                {hangoutLink ? <a rel="noreferrer" target="_blank"
+                                                                  href={hangoutLink}>Join</a> : <>&mdash;</>}
                                             </td>
                                         </tr>
                                     )
@@ -140,6 +319,9 @@ const EventsPage: React.FC = () => {
                     ) : googleEvents?.length === 0 && (
                         <h5 className="my-3 text-dark">You have no Google events</h5>
                     )}
+                </Col>
+                <Col className="my-3" xs={12}>
+                    {userEventsContent}
                 </Col>
             </Row>
             <Modal

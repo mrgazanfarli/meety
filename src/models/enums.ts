@@ -29,3 +29,9 @@ export enum EEventPrivacy {
     PUBLIC = 'PUBLIC',
     PRIVATE = 'PRIVATE',
 }
+
+export enum EEventStatus {
+    PENDING = 'PENDING',
+    APPROVED = 'APPROVED',
+    CANCELED = 'CANCELED',
+}
