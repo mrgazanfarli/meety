@@ -11,6 +11,7 @@ const RadioButton: React.FC<IProps> = ({checked, onChange, name, text, ...rest})
                 {...rest}
                 className="radio-button__field"
                 type="radio"
+                onChange={onChange}
                 name={name}
                 checked={checked}
             />

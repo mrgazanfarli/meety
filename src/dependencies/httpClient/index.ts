@@ -9,7 +9,7 @@ import { IConfigPresets, IHttpClient, IRequestConfig, RequestMethod } from './mo
 
 export class HttpClient implements IHttpClient {
     private static readonly DEFAULT_CONFIG: IRequestConfig = {
-        baseURL: 'https://event-auth.herokuapp.com/v1/users',
+        baseURL: '',
         refreshTokenOnExpiry: true,
         timeout: 30000,
     };

@@ -9,6 +9,7 @@ import i18n from 'i18n';
 import reportWebVitals from 'reportWebVitals';
 import store from 'store';
 
+import 'sweetalert2/src/sweetalert2.scss';
 import 'assets/sass/index.scss';
 
 // localStorage.setItem('token', 'test');

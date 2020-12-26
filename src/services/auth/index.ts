@@ -1,28 +1,10 @@
-import { IUser } from 'models';
-import {
-    ILoginCredentials,
-    IPasswordChangeRq,
-    IPasswordResetRq,
-    IPasswordSetRq
-} from 'services/auth/models';
-import { postRequest, putRequest } from 'utils/rest';
+import { ILoginCredentials } from 'services/auth/models';
+import { postRequest } from 'utils/rest';
 
 const AuthServices = {
     signIn (credentials: ILoginCredentials) {
-        return postRequest<ILoginCredentials, void>('/login', credentials);
+        return postRequest<ILoginCredentials, void>('https://event-auth.herokuapp.com/v1/users/login', credentials);
     },
-
-    changePassword (passwordData: IPasswordChangeRq) {
-        return putRequest<IPasswordChangeRq, void>('/registration/changepassword', passwordData);
-    },
-
-    resetPassword (passwordResetData: IPasswordResetRq) {
-        return postRequest<IPasswordResetRq, void>('/registration/reset', passwordResetData);
-    },
-
-    setPassword (passwordData: IPasswordSetRq) {
-        return putRequest(`/registration/reset/${passwordData.token}`, passwordData);
-    }
 };
 
 export default AuthServices;

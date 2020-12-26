@@ -28,9 +28,8 @@ export interface IAsyncData<T> extends IAsyncDataBase {
 export interface IAppState {
     signIn: IAsyncData<void>;
     uploadImage: IAsyncData<ISimpleId>;
-    changePassword: IAsyncData<void>;
-    resetPassword: IAsyncData<void>;
-    setPassword: IAsyncData<void>;
+    upcomingEvents: IAsyncData<IUpcomingEvent[]>,
+    createEvent: IAsyncData<void>,
 }
 
 export interface IRoute {
@@ -46,36 +45,12 @@ export interface IError {
     request?: any;
 }
 
-export interface IUser {
-    name: string;
-    surname: string;
-    email: string;
-    position: string;
-    token: string;
-    photo: string;
-    photoChangedName: string;
-}
-
 export interface ISimpleId {
     id: string | number;
 }
 
-export interface ILocalUser {
-    name: string;
-    surname: string;
-    email: string;
-    position: string;
-    photo: string;
-    photoChangedName: string;
-}
-
-export interface IDataWithNumber {
-    no: number;
-    name: string;
-}
-
 export interface IVendor {
-    id: number;
+    id: number | string;
     name: string;
 }
 
@@ -116,6 +91,8 @@ export interface IEvent {
     vendor: IVendor;
     eventType: EEventType;
     eventPrivacy: EEventPrivacy;
-    extras: IExtra[];
+    extras: string;
     organizationWay: EOrganizationWay;
+    noiseAllowed: boolean;
+    smokingAllowed: boolean;
 }

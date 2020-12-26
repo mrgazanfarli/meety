@@ -1,13 +1,17 @@
+import { createEvent } from 'actions/events';
 import FormFieldError from 'components/FormFieldError';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
 import RadioButton from 'components/RadioButton';
+import { IAppState, IAsyncData } from 'models';
 import { EEventPrivacy, EEventType, EOrganizationWay } from 'models/enums';
 import moment from 'moment';
 import * as React from 'react';
-import { Simulate } from 'react-dom/test-utils';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'
 import {
+    Button,
     Collapse,
     Nav,
     Navbar,
@@ -25,7 +29,7 @@ import {
     ModalFooter,
     Row,
     Col,
-    Input, Button,
+    Input,
 } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
@@ -35,6 +39,7 @@ import DateTimePicker from 'react-datetime';
 import { logout } from 'utils';
 
 import 'react-datetime/css/react-datetime.css';
+import { isLoading, isPending } from 'utils/redux';
 
 enum EFormField {
     NAME = 'name',
@@ -53,10 +58,14 @@ interface IForm {
     vendor: string;
     organizationWay: EOrganizationWay;
     extras: string;
+    datetime: string;
 }
 
 const Layout: React.FC = (props) => {
     const history = useHistory();
+    const dispatch = useDispatch();
+    const createEventBranch = useSelector<IAppState, IAsyncData<void>>(state => state.createEvent);
+
     const [isOpen, setIsOpen] = React.useState(false);
     const [isAddModalOpen, setAddModalVisibility] = React.useState<boolean>(false);
     const [eventType, setEventType] = React.useState<EEventType>(EEventType.PERSONAL);
@@ -74,7 +83,6 @@ const Layout: React.FC = (props) => {
         control,
         errors,
         getValues,
-        trigger,
         handleSubmit,
     } = useForm<IForm>({ mode: 'onBlur' });
 
@@ -82,9 +90,30 @@ const Layout: React.FC = (props) => {
         setAddModalVisibility(true);
     };
 
-    const handleCreateEvent = () => {
-
-    };
+    const handleCreateEvent = handleSubmit((values: IForm) => {
+        dispatch(createEvent({
+            ...values,
+            datetime: moment(values.datetime).toISOString(),
+            eventType,
+            eventPrivacy,
+            noiseAllowed,
+            smokingAllowed,
+            vendor: {
+                id: values.vendor,
+                name: 'Vendor'
+            }
+        })).then(() => {
+            Swal.fire({
+                titleText: 'Event created!',
+                icon: 'success',
+            });
+        }).catch(() => {
+            Swal.fire({
+                titleText: 'Error occurred!',
+                icon: 'error',
+            });
+        });
+    });
 
     return (
         <div className="layout">
@@ -107,7 +136,7 @@ const Layout: React.FC = (props) => {
                         <div>
                             <UncontrolledDropdown inNavbar>
                                 <DropdownToggle nav caret className="text-light">
-                                    Gazanfar Gazanfarli
+                                    Durna
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <DropdownItem onClick={() => logout(history)}>
@@ -153,6 +182,7 @@ const Layout: React.FC = (props) => {
                                 <Controller
                                     name={EFormField.DATE_TIME}
                                     control={control}
+                                    defaultValue={moment(new Date())}
                                     render={({ onChange, value }) => (
                                         <DateTimePicker
                                             onChange={onChange}
@@ -307,20 +337,21 @@ const Layout: React.FC = (props) => {
                                 <Controller
                                     name={EFormField.EXTRAS}
                                     control={control}
-                                    rules={{
-                                        required: getValues()[EFormField.EXTRAS] || requiredErrorMessage,
-                                    }}
                                     defaultValue={''}
                                     as={<Input />}
                                 />
-                                {Boolean(errors[EFormField.EXTRAS]) &&
-                                <FormFieldError message={errors[EFormField.EXTRAS].message} />}
                             </InputContainer>
                         </Col>
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={handleCreateEvent}>Create</Button>
+                    <Button
+                        color="primary"
+                        onClick={handleCreateEvent}
+                        disabled={isPending(createEventBranch)}
+                    >
+                        Create
+                    </Button>
                 </ModalFooter>
             </Modal>
         </div>
