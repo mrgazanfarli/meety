@@ -10,7 +10,8 @@ import {
     CardFooter,
     CardHeader,
     Col,
-    Container, Input,
+    Container,
+    Input,
     Row,
     UncontrolledCollapse,
 } from 'reactstrap';
@@ -26,7 +27,6 @@ import {
 // Will be shown if it is the first login
 // import WelcomePage from 'pages/Welcome';
 
-// graph items will be passed to dashboard as a prop to make it easy to preview
 const DashboardPage: React.FC = () => {
     const [name, setName] = React.useState<string>('');
     const [location, setLocation] = React.useState('');

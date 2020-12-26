@@ -1,9 +1,11 @@
 import FormFieldError from 'components/FormFieldError';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
+import RadioButton from 'components/RadioButton';
 import { EEventPrivacy, EEventType, EOrganizationWay } from 'models/enums';
 import moment from 'moment';
 import * as React from 'react';
+import { Simulate } from 'react-dom/test-utils';
 import { Link } from 'react-router-dom';
 import {
     Collapse,
@@ -40,27 +42,27 @@ enum EFormField {
     LOCATION = 'location',
     DESCRIPTION = 'description',
     VENDOR = 'vendor',
-    EVENT_TYPE = 'eventType',
-    EVENT_PRIVACY = 'eventPrivacy',
     EXTRAS = 'extras',
-    ORGANIZATION_WAY = 'organizationWay'
+    ORGANIZATION_WAY = 'organizationWay',
 }
 
 interface IForm {
     name: string;
     description: string;
     location: string;
-    eventType: EEventType;
     vendor: string;
-    eventPrivacy: EEventPrivacy;
     organizationWay: EOrganizationWay;
-    extras: string[];
+    extras: string;
 }
 
 const Layout: React.FC = (props) => {
     const history = useHistory();
     const [isOpen, setIsOpen] = React.useState(false);
     const [isAddModalOpen, setAddModalVisibility] = React.useState<boolean>(false);
+    const [eventType, setEventType] = React.useState<EEventType>(EEventType.PERSONAL);
+    const [eventPrivacy, setEventPrivacy] = React.useState<EEventPrivacy>(EEventPrivacy.PUBLIC);
+    const [noiseAllowed, setNoiseAllowed] = React.useState<boolean>(false);
+    const [smokingAllowed, setSmokingAllowed] = React.useState<boolean>(true);
 
     const requiredErrorMessage = 'This field is required';
 
@@ -125,7 +127,7 @@ const Layout: React.FC = (props) => {
                 <ModalHeader toggle={toggleAddModal}>Add an event</ModalHeader>
                 <ModalBody>
                     <Row>
-                        <Col xs={6}>
+                        <Col xs={6} className="mb-2">
                             <InputContainer>
                                 <Label text={'Name'} />
                                 <Controller
@@ -141,7 +143,7 @@ const Layout: React.FC = (props) => {
                                 <FormFieldError message={errors[EFormField.NAME].message} />}
                             </InputContainer>
                         </Col>
-                        <Col xs={6}>
+                        <Col xs={6} className="mb-2">
                             <InputContainer>
                                 <Label text={'Date & time'} />
                                 <Controller
@@ -161,7 +163,7 @@ const Layout: React.FC = (props) => {
                                 />
                             </InputContainer>
                         </Col>
-                        <Col xs={6}>
+                        <Col xs={6} className="mb-2">
                             <InputContainer>
                                 <Label text={'Location'} />
                                 <Controller
@@ -177,7 +179,7 @@ const Layout: React.FC = (props) => {
                                 <FormFieldError message={errors[EFormField.LOCATION].message} />}
                             </InputContainer>
                         </Col>
-                        <Col xs={6}>
+                        <Col xs={6} className="mb-2">
                             <InputContainer>
                                 <Label text={'Vendor'} />
                                 <Controller
@@ -187,7 +189,7 @@ const Layout: React.FC = (props) => {
                                     rules={{
                                         required: getValues()[EFormField.VENDOR] || requiredErrorMessage
                                     }}
-                                    render={({onChange, value}) => (
+                                    render={({ onChange, value }) => (
                                         <select
                                             className="form-control"
                                             onChange={onChange}
@@ -201,6 +203,114 @@ const Layout: React.FC = (props) => {
                                 />
                                 {Boolean(errors[EFormField.VENDOR]) &&
                                 <FormFieldError message={errors[EFormField.VENDOR].message} />}
+                            </InputContainer>
+                        </Col>
+                        <Col xs={6} className="mb-2">
+                            <InputContainer>
+                                <Label text={'Event type'} />
+                                <div className="d-flex align-items-center">
+                                    <RadioButton
+                                        text={'Personal'}
+                                        checked={eventType === EEventType.PERSONAL}
+                                        onChange={() => setEventType(EEventType.PERSONAL)}
+                                    />
+                                    <div className="ml-3">
+                                        <RadioButton
+                                            text={'Corporate'}
+                                            checked={eventType === EEventType.CORPORATE}
+                                            onChange={() => setEventType(EEventType.CORPORATE)}
+                                        />
+                                    </div>
+                                </div>
+                            </InputContainer>
+                        </Col>
+                        <Col xs={6} className="mb-2">
+                            <InputContainer>
+                                <Label text={'Privacy'} />
+                                <div className="d-flex align-items-center">
+                                    <RadioButton
+                                        text={'Private'}
+                                        checked={eventPrivacy === EEventPrivacy.PRIVATE}
+                                        onChange={() => setEventPrivacy(EEventPrivacy.PRIVATE)}
+                                    />
+                                    <div className="ml-3">
+                                        <RadioButton
+                                            text={'Public'}
+                                            checked={eventPrivacy === EEventPrivacy.PUBLIC}
+                                            onChange={() => setEventPrivacy(EEventPrivacy.PUBLIC)}
+                                        />
+                                    </div>
+                                </div>
+                            </InputContainer>
+                        </Col>
+                        <Col xs={6} className="mb-2">
+                            <InputContainer>
+                                <Label text={'Is smoking allowed?'} />
+                                <div className="d-flex align-items-center">
+                                    <RadioButton
+                                        text={'Yes'}
+                                        checked={smokingAllowed}
+                                        onChange={() => setSmokingAllowed(true)}
+                                    />
+                                    <div className="ml-3">
+                                        <RadioButton
+                                            text={'No'}
+                                            checked={!smokingAllowed}
+                                            onChange={() => setSmokingAllowed(false)}
+                                        />
+                                    </div>
+                                </div>
+                            </InputContainer>
+                        </Col>
+                        <Col xs={6} className="mb-2">
+                            <InputContainer>
+                                <Label text={'Are noisy companies allowed?'} />
+                                <div className="d-flex align-items-center">
+                                    <RadioButton
+                                        text={'Yes'}
+                                        checked={noiseAllowed}
+                                        onChange={() => setNoiseAllowed(true)}
+                                    />
+                                    <div className="ml-3">
+                                        <RadioButton
+                                            text={'No'}
+                                            checked={!noiseAllowed}
+                                            onChange={() => setNoiseAllowed(false)}
+                                        />
+                                    </div>
+                                </div>
+                            </InputContainer>
+                        </Col>
+                        <Col xs={12} className="mb-2">
+                            <InputContainer>
+                                <Label text={'Description'} />
+                                <Controller
+                                    name={EFormField.DESCRIPTION}
+                                    control={control}
+                                    rules={{
+                                        required: getValues()[EFormField.DESCRIPTION] || requiredErrorMessage,
+                                    }}
+                                    defaultValue={''}
+                                    as={<Input />}
+                                />
+                                {Boolean(errors[EFormField.DESCRIPTION]) &&
+                                <FormFieldError message={errors[EFormField.DESCRIPTION].message} />}
+                            </InputContainer>
+                        </Col>
+                        <Col xs={12} className="mb-2">
+                            <InputContainer>
+                                <Label text={'What will be extra?'} />
+                                <Controller
+                                    name={EFormField.EXTRAS}
+                                    control={control}
+                                    rules={{
+                                        required: getValues()[EFormField.EXTRAS] || requiredErrorMessage,
+                                    }}
+                                    defaultValue={''}
+                                    as={<Input />}
+                                />
+                                {Boolean(errors[EFormField.EXTRAS]) &&
+                                <FormFieldError message={errors[EFormField.EXTRAS].message} />}
                             </InputContainer>
                         </Col>
                     </Row>
