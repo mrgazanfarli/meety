@@ -37,7 +37,7 @@
     "start:client": "PORT=7000 react-scripts start",
     "start:server": "cd ./server && npm start",
     "start": "react-scripts build && npm run start:server",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
