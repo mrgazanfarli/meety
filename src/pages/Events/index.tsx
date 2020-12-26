@@ -12,7 +12,7 @@ import { getUserEvents } from 'actions/events';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
 import LoadingSpinner from 'components/Loading';
-import { IAppState, IAsyncData, IEvent } from 'models';
+import { IAppState, IAsyncData } from 'models';
 import moment from 'moment';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
