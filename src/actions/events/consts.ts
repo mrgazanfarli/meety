@@ -2,6 +2,7 @@ const EventActions = {
     UPCOMING_EVENTS: 'UPCOMING_EVENTS',
     CREATE_EVENT: 'CREATE_EVENT',
     GET_USER_EVENTS: 'GET_USER_EVENTS',
+    GET_EVENT_DETAILS: 'GET_EVENT_DETAILS',
 };
 
 export default EventActions;

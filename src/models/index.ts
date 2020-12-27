@@ -1,8 +1,6 @@
 import { EEventPrivacy, EEventStatus, EEventType, EOrganizationWay, ERequestStatus } from 'models/enums';
 import { Maybe } from 'models/types';
-import moment from 'moment';
-import { userEvents } from 'reducers/events';
-import { IUserEventsResponse } from 'services/events/models';
+import { IEventsResponse } from 'services/events/models';
 
 export interface Action<T = any> {
     type: T
@@ -29,9 +27,10 @@ export interface IAsyncData<T> extends IAsyncDataBase {
 
 export interface IAppState {
     signIn: IAsyncData<void>;
-    upcomingEvents: IAsyncData<IUpcomingEvent[]>,
+    upcomingEvents: IAsyncData<IEventsResponse>,
     createEvent: IAsyncData<void>,
-    userEvents: IAsyncData<IUserEventsResponse>
+    userEvents: IAsyncData<IEventsResponse>,
+    eventDetails: IAsyncData<IEvent>,
 }
 
 export interface IRoute {
@@ -47,34 +46,13 @@ export interface IError {
     request?: any;
 }
 
-export interface ISimpleId {
-    id: string | number;
-}
-
 export interface IVendor {
-    id: number | string;
+    id?: number | string;
     name: string;
-}
-
-export interface IExtra {
-    name: string;
-    attendees: string[];
-}
-
-export interface IUpcomingEvent {
-    dateTime: string;
-    location: string;
-    name: string;
-    description: string;
-    vendor: IVendor;
-    eventType: EEventType;
-    eventPrivacy: EEventPrivacy;
-    extras: string;
-    organizationWay: EOrganizationWay;
-    createdBy: string;
 }
 
 export interface IEvent {
+    id: number;
     dateTime: string;
     location: string;
     name: string;
@@ -82,13 +60,13 @@ export interface IEvent {
     vendor: IVendor;
     eventType: EEventType;
     eventPrivacy: EEventPrivacy;
-    extras: string;
+    extras?: string;
     organizationWay: EOrganizationWay;
     noiseAllowed: boolean;
     smokingAllowed: boolean;
     createdBy: string;
-    eventStatus?: EEventStatus;
-    imgUrl?: string;
+    eventStatus: EEventStatus;
+    imgUrl: string;
 }
 
 export interface IPaginationData {

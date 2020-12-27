@@ -37,6 +37,7 @@
   "scripts": {
     "start": "npm install -g serve && npm run build && serve -s build",
     "build": "GENERATE_SOURCEMAP=false CI=false react-scripts build",
+    "dev": "PORT=7000 react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "heroku-postbuild": "npm run build"

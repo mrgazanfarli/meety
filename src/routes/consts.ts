@@ -3,12 +3,6 @@ export const ROUTES = {
         LOGIN: {
             PATH: '/login'
         },
-        PASSWORD_RECOVERY: {
-            PATH: '/password-recovery'
-        },
-        PASSWORD_SET: {
-            PATH: '/password-set'
-        }
     },
     DASHBOARD: {
         PATH: '/dashboard',
@@ -18,5 +12,8 @@ export const ROUTES = {
     },
     EVENTS: {
         PATH: '/events',
+        DETAILS: {
+            PATH: '/events/:id/details'
+        }
     },
 };

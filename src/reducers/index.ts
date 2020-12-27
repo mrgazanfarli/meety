@@ -8,6 +8,7 @@ import {
     upcomingEvents,
     createEvent,
     userEvents,
+    eventDetails,
 } from 'reducers/events';
 
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers<IAppState>({
     upcomingEvents,
     createEvent,
     userEvents,
+    eventDetails,
 });
 
 export default rootReducer;

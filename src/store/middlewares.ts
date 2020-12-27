@@ -9,10 +9,8 @@ import {
 export const reduxPromiseMiddleware = ({ dispatch }: any): any => (next: any) => (action: any) => {
     if (action && isPromise(action.payload)) {
         const { type, payload } = action;
-        // const timestamp = +new Date();
         const meta = {
             ...action.meta,
-            // timestamp,
         };
 
         dispatch({

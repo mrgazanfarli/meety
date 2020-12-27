@@ -3,6 +3,7 @@ import FormFieldError from 'components/FormFieldError';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
 import RadioButton from 'components/RadioButton';
+import SimpleLink from 'components/SimpleLink';
 import { IAppState, IAsyncData } from 'models';
 import { EEventPrivacy, EEventType, EOrganizationWay } from 'models/enums';
 import moment from 'moment';
@@ -48,7 +49,6 @@ enum EFormField {
     DESCRIPTION = 'description',
     VENDOR = 'vendor',
     EXTRAS = 'extras',
-    ORGANIZATION_WAY = 'organizationWay',
 }
 
 interface IForm {
@@ -72,6 +72,7 @@ const Layout: React.FC = (props) => {
     const [eventPrivacy, setEventPrivacy] = React.useState<EEventPrivacy>(EEventPrivacy.PUBLIC);
     const [noiseAllowed, setNoiseAllowed] = React.useState<boolean>(false);
     const [smokingAllowed, setSmokingAllowed] = React.useState<boolean>(true);
+    const [organizationWay, setOrganizationWay] = React.useState<EOrganizationWay>(EOrganizationWay.CUSTOM);
 
     const requiredErrorMessage = 'This field is required';
 
@@ -99,14 +100,17 @@ const Layout: React.FC = (props) => {
             noiseAllowed,
             smokingAllowed,
             vendor: {
-                id: values.vendor,
-                name: 'Vendor'
+                name: values.vendor
             },
-            createdBy: ['durna', 'mrgazanfarli'][Math.round(Math.random())]
+            createdBy: 'mrgazanfarli',
+            organizationWay,
         })).then(() => {
             Swal.fire({
                 titleText: 'Event created!',
                 icon: 'success',
+            }).then(() => {
+                toggleAddModal();
+                window.location.reload();
             });
         }).catch(() => {
             Swal.fire({
@@ -316,6 +320,36 @@ const Layout: React.FC = (props) => {
                                 </div>
                             </InputContainer>
                         </Col>
+                        <Col xs={12} className="mb-2">
+                            <InputContainer>
+                                <Label text={'How are you going to organize the event?'} />
+                                <div className="d-flex align-items-center">
+                                    <RadioButton
+                                        text={'I will take care of it'}
+                                        checked={organizationWay === EOrganizationWay.CUSTOM}
+                                        onChange={() => setOrganizationWay(EOrganizationWay.CUSTOM)}
+                                    />
+                                    <div className="ml-3">
+                                        <RadioButton
+                                            text={'Professionals will do it'}
+                                            checked={organizationWay === EOrganizationWay.BY_PROFESSIONAL}
+                                            onChange={() => setOrganizationWay(EOrganizationWay.BY_PROFESSIONAL)}
+                                        />
+                                    </div>
+                                    <div className="ml-3">
+                                        <RadioButton
+                                            text={'I will use paid guides'}
+                                            checked={organizationWay === EOrganizationWay.BY_GUIDE}
+                                            onChange={() => setOrganizationWay(EOrganizationWay.BY_GUIDE)}
+                                        />
+                                    </div>
+                                </div>
+                            </InputContainer>
+                        </Col>
+                        {organizationWay === EOrganizationWay.BY_GUIDE && (
+                            <Col xs={12}>
+                                <SimpleLink href="/">See our plans for guides</SimpleLink>
+                            </Col>)}
                         <Col xs={12} className="mb-2">
                             <InputContainer>
                                 <Label text={'Description'} />

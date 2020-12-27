@@ -10,7 +10,10 @@ export interface IUpcomingEventFilter extends IPaginationData {
     dateTime?: string;
 }
 
-export interface IUserEventsResponse {
+export interface IEventsResponse {
     totalPageCount: number;
     events: IEvent[];
 }
+
+
+export interface ICreateEventRq extends Omit<IEvent, 'id' | 'eventStatus' | 'imgUrl'> { }

@@ -9,6 +9,7 @@ import {
     SentimentSatisfiedAlt,
 } from '@material-ui/icons';
 import { getUserEvents } from 'actions/events';
+import EventCard from 'components/EventCard';
 import InputContainer from 'components/InputContainer';
 import Label from 'components/Label';
 import LoadingSpinner from 'components/Loading';
@@ -30,12 +31,12 @@ import {
     Table
 } from 'reactstrap';
 import { gapi } from 'gapi-script';
-import { IUserEventsResponse } from 'services/events/models';
+import { IEventsResponse } from 'services/events/models';
 import { isError, isPending, isSuccess } from 'utils/redux';
 
 const EventsPage: React.FC = () => {
     const dispatch = useDispatch();
-    const eventsBranch = useSelector<IAppState, IAsyncData<IUserEventsResponse>>((state) => state.userEvents);
+    const eventsBranch = useSelector<IAppState, IAsyncData<IEventsResponse>>((state) => state.userEvents);
 
     const [page, setPage] = React.useState<number>(1);
     const [limit, setLimit] = React.useState<number>(10);
@@ -111,94 +112,22 @@ const EventsPage: React.FC = () => {
     } else if (isError(eventsBranch)) {
         userEventsContent = <h4 className="text-danger">Unexpected error occurred! Please, try again later...</h4>
     } else if (isSuccess(eventsBranch)) {
-        userEventsContent = (
+        userEventsContent = eventsBranch.data.events.length > 0 ? (
             <>
                 <h3 className="text-primary my-3">Events:</h3>
                 <Row>
                     {eventsBranch.data.events.map((e) => {
-                        const {
-                            name,
-                            description,
-                            dateTime,
-                            createdBy,
-                            eventStatus,
-                            location,
-                            imgUrl,
-                            smokingAllowed,
-                            noiseAllowed,
-                            eventType,
-                        } = e;
-
                         return (
-                            <Col xs={6} className="py-3">
-                                <Card>
-                                    <CardHeader>
-                                        {name}
-                                    </CardHeader>
-                                    <CardBody className="pt-0 px-0">
-                                        <img
-                                            style={{ width: '100%', height: '250px', objectFit: 'cover' }}
-                                            src={imgUrl}
-                                            alt={name}
-                                        />
-                                        <div className="px-3 mt-2 text-justify">
-                                            <p>{description}</p>
-                                            <Row>
-                                                <Col xs={6}>
-                                                    <span className="text-muted d-flex align-items-center">
-                                                        <QueryBuilder />
-                                                        <span
-                                                            className="ml-2">{moment(dateTime).format('DD.MM.YYYY HH:mm')}</span>
-                                                    </span>
-                                                    <span className="text-muted mt-2 d-flex align-items-center">
-                                                        <Room />
-                                                        <span className="ml-2">{location}</span>
-                                                    </span>
-                                                    <span className="text-muted mt-2 d-flex align-items-center">
-                                                        <SmokingRooms />
-                                                        <span
-                                                            className="ml-2">{smokingAllowed ? 'Allowed' : 'Not allowed'}</span>
-                                                    </span>
-                                                </Col>
-                                                <Col xs={6}>
-                                                    <span className="text-muted d-flex align-items-center">
-                                                        <Person />
-                                                        <span className="ml-2">{createdBy}</span>
-                                                    </span>
-                                                    <span className="text-muted mt-2 d-flex align-items-center">
-                                                        <EmojiPeople />
-                                                        <span className="ml-2">{eventType}</span>
-                                                    </span>
-                                                    <span className="text-muted mt-2 d-flex align-items-center">
-                                                        <RecordVoiceOver />
-                                                        <span
-                                                            className="ml-2">{noiseAllowed ? 'Allowed' : 'Not allowed'}</span>
-                                                    </span>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </CardBody>
-                                    <CardFooter className="d-flex justify-content-end">
-                                        <Button
-                                            color="secondary"
-                                            className="d-flex align-items-center"
-                                        >
-                                            <Info className="mr-2" /> Details
-                                        </Button>
-                                        <Button
-                                            color="primary"
-                                            className="d-flex align-items-center ml-3"
-                                        >
-                                            <SentimentSatisfiedAlt className="mr-2" /> Join
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
+                            <Col key={e.id} xs={6} className="py-3">
+                                <EventCard event={e} />
                             </Col>
                         );
                     })}
                 </Row>
             </>
-        )
+        ) : (
+            <h4>You do not have any events.</h4>
+        );
     }
 
     const renderPaginationOptions = () => {
