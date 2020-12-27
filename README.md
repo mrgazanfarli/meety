@@ -1,6 +1,6 @@
 ## App preview
 
-Click [here](https://meety-16j1hux7y.vercel.app) to visit the app. Credentials for login is as below:  
+Click [here](https://meety.mrgazanfarli.vercel.app) to visit the app. Credentials for login is as below:  
 username: durna  
 password: durna
 
